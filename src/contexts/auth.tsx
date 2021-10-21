@@ -1,5 +1,4 @@
 import { createContext } from "react";
-import Login from "../pages/Login";
 import api from "../services/api";
 
 interface AuthContextData {

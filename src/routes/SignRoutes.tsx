@@ -8,7 +8,7 @@ import Login from "../pages/Login";
 const SignRoutes: React.FC = () => {
   return (
     <BrowserRouter>
-      <Route path="/" component={Login} />{" "}
+      <Route path="/" component={Login} />
     </BrowserRouter>
   );
 };
