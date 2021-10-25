@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { useQuery } from "urql";
+import apolloClient from "../services/apolloClient";
 interface AuthContextData {
   signed: boolean;
   Login(): Promise<void>;
@@ -7,8 +7,8 @@ interface AuthContextData {
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-const UserQuery = `query findByEmail ($email: String!){
-                      user (email: $email){
+const UserQuery = `query findByEmail ($ID: Int!){
+                      user (id: $ID){
                         id
                         name
                         email
@@ -17,11 +17,13 @@ const UserQuery = `query findByEmail ($email: String!){
 
 export const AuthProvider: React.FC = ({ children }) => {
   async function Login() {
-    const response = useQuery({
-      query: UserQuery,
-      variables: "john.doe@gmail.com",
-    });
-
+    let response;
+    apolloClient
+      .query(UserQuery, { ID: 1 })
+      .toPromise()
+      .then((result) => {
+        response = result.data;
+      });
     console.log(response);
   }
 
