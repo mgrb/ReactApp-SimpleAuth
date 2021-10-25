@@ -1,6 +1,5 @@
 import { createContext } from "react";
-import api from "../services/api";
-
+import { useQuery } from "urql";
 interface AuthContextData {
   signed: boolean;
   Login(): Promise<void>;
@@ -8,11 +7,19 @@ interface AuthContextData {
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
+const UserQuery = `query findByEmail ($email: String!){
+                      user (email: $email){
+                        id
+                        name
+                        email
+                      }
+                    }`;
+
 export const AuthProvider: React.FC = ({ children }) => {
   async function Login() {
-    const response = await api.post("/login", {
-      email: "exemple@email.com",
-      password: "123123",
+    const response = useQuery({
+      query: UserQuery,
+      variables: "john.doe@gmail.com",
     });
 
     console.log(response);
